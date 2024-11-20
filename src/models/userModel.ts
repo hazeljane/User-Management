@@ -1,19 +1,26 @@
-import mongoose, { Schema } from "mongoose";
-import {IUser} from "../ interfaces/userInterface";
+import mongoose, { Schema, Document } from "mongoose";
+import { IUser } from "../interfaces/userInterface";  // Assuming you have an IUser interface
 
-//Define the schema for the User model
-//Schema specifies the structure and validation rules for User documents in MongoDB
-export const userSchema = new Schema({
-//User email field - must be unique, required, and max 100 characters
-	email: {type:String,length:100, required:true},
-//Password field - required and max 50 characters
-	password: {type:String, length:50, required:true},
-//First name field - required and max 50 characters 
-	firstName: {type:String,length:50, required:true},
-//Last name field - required and max 50 characters
-	lastName: {type: String,length:50, required:true},
-//Enable automatic timestamp fields (createdAt and UpdatedAt)
-	{ timestamps: true}
+// Define the schema for the User model
+// Schema specifies the structure and validation rules for User documents in MongoDB
+export const userSchema: Schema = new Schema(
+  {
+    // User email field - must be unique, required, and max 100 characters
+    email: { type: String, required: true, unique: true, maxlength: 100 },
+    
+    // Password field - required and max 50 characters
+    password: { type: String, required: true, maxlength: 50 },
+    
+    // First name field - required and max 50 characters
+    firstName: { type: String, required: true, maxlength: 50 },
+    
+    // Last name field - required and max 50 characters
+    lastName: { type: String, required: true, maxlength: 50 },
+
+    // Enable automatic timestamp fields (createdAt and updatedAt)
+  },
+  { timestamps: true }
 );
-//Create and export the User model
+
+// Create and export the User model
 export const User = mongoose.model<IUser>("User", userSchema);
