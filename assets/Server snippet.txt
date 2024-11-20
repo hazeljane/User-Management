@@ -1,0 +1,43 @@
+import http from "http";
+import express from "express";
+
+import ".config/logging";
+import { server } from "./config/config";
+
+import "reflect-metadata";
+
+import { corsHandler } from "./middlware/corsHandler";
+import { loggingHandler } from "./middlware/loggingHandler";
+import { routeNotFound } from "./middlware/routeNotFound";
+
+export const application = express();
+export let httpServer:ReturnType<typeofhttp.createServer>;
+
+export const Main = async () =>{
+	logging.log("--------------------------------");
+	logging.log("Initializing API");
+
+	logging.log("-------------------------------");
+
+	application.use(loggingHandler);
+
+	logging.log("-------------------------------");
+	logging.log("Define Controller Routing");
+
+	logging.log("-------------------------------");
+
+	application.use(routeNotFound);
+	logging.log("-------------------------------");
+
+	httpServer = httpServer(application);
+
+	httpServer.listen(server.SERVER_PORT, () => {
+		logging.log(`Server started on ${server.SERVER_HOSTNAME}:${server.SERVER_PORT}`);
+	logging.log("-------------------------------");
+
+	});
+};
+
+export const Shutdown = (callback: any) => httpServer && httpServer.close(callback);
+
+Main();

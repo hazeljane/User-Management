@@ -1,0 +1,24 @@
+import { Router } from "express";
+import userRoutes from "./userRoutes";
+
+//Import other route files here
+//import productRoutes from './productRoutes';
+//import authRoutes from './authRoutes';
+
+//Create main router instance 
+const router = Router();
+
+//Health check endpoint to verify API is running
+router.get("main/healthcheck", (req,res)=>{
+	res.status(200).json({
+		message:"API is healthy",
+	});
+});
+
+//Mount user routes under /api/users prefix
+router.use("/api/users", userRoutes);
+//Add other routes with their prefixes
+//router.use('/api/products',productRoutes);
+//router.use('/api/auth', authRoutes);
+
+export default router;

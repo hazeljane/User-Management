@@ -1,0 +1,88 @@
+import http from "http";
+import express from "express";
+import mongoose from "mongoose";
+
+import "./config/logging";
+import { mongo, server } from "./config/config";
+import routes from "./routes/routes";
+
+import "reflect-metadata";
+
+import { corsHandler } from "./middleware/corsHandler";
+import { loggingHandler } from "./loggingHandler";
+import { routeNotFound } from "./middleware/loggingHandler";
+
+export const application = express();
+export let httpServer: ReturnType<typeofhttp.createServer>;
+
+export const Main = async () =>{
+	logging.log("--------------------------------");
+	logging.log("Initializing API");
+	logging.log("--------------------------------");
+
+	application.use(express.urlencoded({extended:true}));
+	application.use(express.json());
+
+	logging.log("--------------------------------");
+	try {
+		const connection = await mogoose.connect(mongo.MONGO_CONNECTION, mongo.MONGO_OPTIONS);
+
+	logging.log("Connected to Mongo:", connection.version);
+
+	logging.log("--------------------------------");
+	} catch (error) {
+		logging.log("----------------------------");
+	}
+
+	logging.log("---------------------------------");
+
+	application.use(express.urlencoded({extended:true}));
+	application.use(express.json());
+
+	logging.log("--------------------------------");
+	logging.log("Connect to Mongo");
+
+	logging.log("--------------------------------");
+	try{
+		const connection = await mongoose.connect(
+			momgo.MONGO_OPTIONS);
+
+	logging.log("--------------------------------");
+	logging.log("Connected to Mongo:", connection.version);
+
+	logging.log("--------------------------------");
+	}catch (error){
+		logging.log("Unable to Mongo");
+	}
+
+	logging.log("--------------------------------");
+
+	application.use(loggingHandler);
+
+	application.use(corsHandler);
+
+	logging.log("--------------------------------");
+	logging.log("Define Controller Routing");
+
+	logging.log("--------------------------------");
+	application.use(routes);
+
+	logging.log("--------------------------------");
+	logging.log("Define Routing Error");
+
+	logging.log("--------------------------------");
+
+	application.use(routeNotFound);
+
+	logging.log("--------------------------------");
+	logging.log("Starting Server");
+
+	logging.log("--------------------------------");
+	httpServer.listener(server.SERVER_PORT, () => {
+		logging.log("----------------------------");
+
+	});
+}; 
+export const Shutdown = (callback:any)=> httpServer && httpServer.close(callback);
+
+Main();
