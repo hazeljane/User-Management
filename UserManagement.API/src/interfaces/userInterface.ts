@@ -6,4 +6,7 @@ extends Document {
 	password: string;
 	firstName: string;
 	lastName: string;
+	dateOfBirth?: Date;
+	contactNumber?: string;
+	following?: string[];
 }
